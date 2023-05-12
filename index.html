@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>resizeImg</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfCHdcUAAAAAOwkHsW_7W7MfoOrvoIw9CXdLRBA"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./lib/grecaptcha.js" id="grecaptchajs"></script>
+    <script src="./lib/toDateTimeString.js"></script>
+    <script src="./lib/isset.js"></script>
+    <style>
+        td {
+            padding: 0 5px;
+        }
+        code {
+            background-color: #e0e0e0;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <form action="./" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <input type="submit">
+    </form>
+    <div>
+        <a href="https://github.com/n138-kz/resizeImg">
+            <img src="lib/howto_iphone_shortcut_01.png" style="width: 75%; max-width: 300px;" alt="">
+        </a>
+        <a href="https://github.com/n138-kz/resizeImg">
+            <img src="lib/howto_iphone_shortcut_02.png" style="width: 75%; max-width: 300px;" alt="">
+        </a>
+        <a href="https://github.com/n138-kz/resizeImg">https://github.com/n138-kz/resizeImg</a>
+        <table border="1">
+            <tr>
+                <th colspan="2">METHOD</th>
+            </tr>
+            <tr>
+                <td>METHOD</td>
+                <td><code>POST</code></td>
+            </tr>
+            <tr>
+                <th colspan="2">HEADER</th>
+            </tr>
+            <tr>
+                <td><code>X-SCRIPT-DEBUG</code></td>
+                <td><code>0</code></td>
+            </tr>
+            <tr>
+                <td><code>X-USERID</code></td>
+                <td><code>0</code></td>
+            </tr>
+            <tr>
+                <th colspan="2">CONTENT</th>
+            </tr>
+            <tr>
+                <td><code>image</code></td>
+                <td>画像ファイル（バイナリ）</td>
+            </tr>
+        </table>
+        
+    </div>
+</body>
+</html>
