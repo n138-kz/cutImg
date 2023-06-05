@@ -30,7 +30,7 @@ function sum($param1, $param2) {
 }
 ini_set('upload_max_filesize', '25M');
 ini_set('post_max_size', '100M');
-header('Content-Type: Application/json');
+header('Content-Type: text/plain');
 $exitStatus = new n138();
 $exitStatus->setVal('time', time());
 $exitStatus->setVal('remote', ['address'=>$_SERVER['REMOTE_ADDR']]);
