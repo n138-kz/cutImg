@@ -97,6 +97,22 @@ if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])
 
 try {
     $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
+    switch ($image['imagesize'][2]) {
+        case IMAGETYPE_JPEG:
+            $image['raw_data'] = imagecreatefromjpeg($image['tmp_name']);
+            $image['imagetype'] = 'JPEG';
+            break;
+        case IMAGETYPE_PNG:
+            $image['raw_data'] = imagecreatefrompng($files_before_1valid[$val]['tmp_name']);
+            $image['imagetype'] = 'PNG';
+            break;
+        case IMAGETYPE_GIF:
+            $image['raw_data'] = imagecreatefromgif($files_before_1valid[$val]['tmp_name']);
+            $image['imagetype'] = 'GIF';
+            break;
+        default:
+            break;
+    }
 
     var_dump($image);
 } catch (\Throwable $th) {
