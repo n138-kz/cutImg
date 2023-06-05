@@ -134,7 +134,7 @@ try {
 }
 #var_dump();
 putenv('GDFONTPATH=' . realpath('.'));
-imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Arial.ttf', base64_encode('test'));
+imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 255, 0, 0), 'Arial.ttf', base64_encode('test'));
 
 exit();
 
