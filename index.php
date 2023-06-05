@@ -61,8 +61,6 @@ if( mb_strtolower($_SERVER['REQUEST_METHOD']) != 'post' ){
 	error_log(json_encode($exitStatus->getExitStatus()));
 	exit();
 }
-
-if ( !isset($_POST) || !is_array($_POST) ) {
 exit();
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
