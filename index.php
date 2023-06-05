@@ -129,9 +129,13 @@ try {
     imagepng( $image['canvas'], NULL );
     
 } catch (\Throwable $th) {
+    imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
 }
 header('Content-Type: text/plain');
-var_dump($image);exit();
+#var_dump();
+imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', base64_encode('test'));
+
+exit();
 
 
 
