@@ -118,6 +118,18 @@
                 size_width = getNotNaN(parseInt(document.querySelector('input[name="position_1x"]').max, 10));
                 size_height = getNotNaN(parseInt(document.querySelector('input[name="position_1y"]').max, 10));
 
+                try {
+                    position_0x = preset[0];
+                    position_0y = preset[1];
+                    position_1x = preset[2];
+                    position_1y = preset[3];
+                } catch (e) {
+                    position_0x = 0;
+                    position_0y = 0;
+                    position_1x = 0;
+                    position_1y = 0;
+                    console.error(e);
+                }
                 console.log([preset, {width: size_width, height:size_height}]);
             }
         </script>
