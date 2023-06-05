@@ -167,7 +167,7 @@ try {
     error_log($th->getMessage());
     header('Content-Type: image/png');
     putenv('GDFONTPATH=' . realpath('.'));
-    imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
+    imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Arial.ttf', $th->getMessage());
     imagepng( $image['canvas'] );
     exit();
 }
