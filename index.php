@@ -11,6 +11,7 @@ class n138 {
 			'remote' => [
 				'address' => '',
 			],
+            'return_image' => FALSE,
 			'debug' => FALSE,
 		];
 	}
