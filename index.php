@@ -126,6 +126,7 @@ try {
         header('Content-Length: '.filesize('php://memory/'.$image['export_name']));
         #echo file_get_contents('php://memory/'.$image['export_name']);
     }
+    header('Content-Type: image/png');
     imagepng( $image['canvas'], NULL );
     
 } catch (\Throwable $th) {
@@ -136,11 +137,7 @@ try {
     imagepng( $image['canvas'] );
     exit();
 }
-#var_dump();
-header('Content-Type: image/png');
-putenv('GDFONTPATH=' . realpath('.'));
-imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 255, 0, 0), 'Arial.ttf', base64_encode('test'));
-imagepng( $image['canvas'] );
+
 
 exit();
 
