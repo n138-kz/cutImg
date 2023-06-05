@@ -114,9 +114,11 @@ try {
             break;
     }
 
-    var_dump($image);
 } catch (\Throwable $th) {
 }
+header('Content-Type: text/plain');
+var_dump($image);exit();
+
 
 
 
