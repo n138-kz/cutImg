@@ -95,23 +95,16 @@ if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])
 	exit();
 }
 
-$files_before_1 = $_FILES['image'];
-$files_before_1valid = [];
-$item = [
-    'lt', 'ct', 'rt',
-    'lm', 'cm', 'rm',
-    'lb', 'cb', 'rb',
-];
-foreach ($item as $key => $val) {
-    if ( ! isset($files_before_1['error'][$val]) && isset($_FILES['image'.'_'.$val]['tmp_name']) ) {
-        $files_before_1['error'][$val]     = $_FILES['image'.'_'.$val]['error'];
-        $files_before_1['name'][$val]      = $_FILES['image'.'_'.$val]['name'];
-        $files_before_1['tmp_name'][$val]  = $_FILES['image'.'_'.$val]['tmp_name'];
-        $files_before_1['full_path'][$val] = $_FILES['image'.'_'.$val]['full_path'];
-        $files_before_1['type'][$val]      = $_FILES['image'.'_'.$val]['type'];
-        $files_before_1['size'][$val]      = $_FILES['image'.'_'.$val]['size'];
-    }
+try {
+    $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
+
+    var_dump($image);
+} catch (\Throwable $th) {
 }
+
+
+
+
 foreach ($item as $key => $val) {
     if ($files_before_1["error"][$val]!=0 || !isset($files_before_1["error"][$val])) {
         unset($files_before_1['error'][$val]);
