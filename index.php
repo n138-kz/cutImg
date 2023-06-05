@@ -94,7 +94,6 @@ if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])
 	error_log(json_encode($exitStatus->getExitStatus()));
 	exit();
 }
-header('Content-Type: text/plain');
 
 try {
     $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
@@ -130,7 +129,12 @@ try {
     imagepng( $image['canvas'], NULL );
     
 } catch (\Throwable $th) {
+    error_log($th->getMessage());
+    header('Content-Type: image/png');
+    putenv('GDFONTPATH=' . realpath('.'));
     imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
+    imagepng( $image['canvas'] );
+    exit();
 }
 #var_dump();
 header('Content-Type: image/png');
