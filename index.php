@@ -145,10 +145,10 @@ try {
         $image['raw_data'],
         0,
         0,
-        0,
-        0,
-        $image['imagesize'][0],
-        $image['imagesize'][1]
+        $image['position'][0],
+        $image['position'][1],
+        $image['position'][2],
+        $image['position'][3]
     );
 
     if (RETURN_IMAGE) {
