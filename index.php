@@ -97,6 +97,29 @@ if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])
 
 try {
     $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
+
+    $image['position'] = [ 0, 0, 0, 0 ];
+    if ( !isset($_POST['position_0x']) || (int)$_POST['position_0x']>=0 ) {
+        $image['position'][0] = 0;
+    } else {
+        $image['position'][0] = $_POST['position_0x'];
+    }
+    if ( !isset($_POST['position_0y']) || (int)$_POST['position_0y']>=0 ) {
+        $image['position'][1] = 0;
+    } else {
+        $image['position'][1] = $_POST['position_0y'];
+    }
+    if ( !isset($_POST['position_1x']) || (int)$_POST['position_1x']>=0 ) {
+        $image['position'][2] = $image['imagesize'][0];
+    } else {
+        $image['position'][2] = $_POST['position_1x'];
+    }
+    if ( !isset($_POST['position_1y']) || (int)$_POST['position_1y']>=0 ) {
+        $image['position'][3] = $image['imagesize'][1];
+    } else {
+        $image['position'][3] = $_POST['position_1y'];
+    }
+    
     switch ($image['imagesize'][2]) {
         case IMAGETYPE_JPEG:
             $image['raw_data'] = imagecreatefromjpeg($_FILES['image']['tmp_name']);
