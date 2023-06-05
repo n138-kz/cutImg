@@ -143,6 +143,7 @@
                 }
                 if ( !(0 <= position_0x) || !(0 <= position_0y) ) {
                     /* NG */
+                    document.getElementById('exec_output').innerHTML = '';
                     dom_p = document.createElement('p');
                     dom_p.innerText = 'preset error.';
                     document.getElementById('exec_output').append(dom_p);
@@ -152,6 +153,7 @@
                 }
                 if ( !(size_width >= position_1x) || !(size_height >= position_1y) ) {
                     /* NG */
+                    document.getElementById('exec_output').innerHTML = '';
                     dom_p = document.createElement('p');
                     dom_p.innerText = 'value error.';
                     document.getElementById('exec_output').append(dom_p);
