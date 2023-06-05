@@ -41,6 +41,11 @@ if( isset($_SERVER['HTTP_X_SCRIPT_DEBUG']) ){
 }
 define('DEBUG', $exitStatus->getVal('debug'));
 
+if( isset($_SERVER['HTTP_X_RETURN_IMAGE']) ){
+    $exitStatus->setVal('return_image', (bool)($_SERVER['HTTP_X_RETURN_IMAGE']));
+}
+define('RETURN_IMAGE', $exitStatus->getVal('return_image'));
+
 if( mb_strtolower($_SERVER['REQUEST_METHOD']) != 'post' ){
 	http_response_code(405);
 	$exitStatus->setVal('time', time());
