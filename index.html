@@ -130,6 +130,11 @@
                     position_1y = 0;
                     console.error(e);
                 }
+                if ( !(0 <= position_0x) || !(0 <= position_0y) ) {
+                    /* NG */
+                    console.error('preset error.');
+                    return false;
+                }
                 console.log([preset, {width: size_width, height:size_height}]);
             }
         </script>
