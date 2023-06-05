@@ -133,7 +133,7 @@ try {
     imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
 }
 #var_dump();
-imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', base64_encode('test'));
+imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Myrica.ttc', base64_encode('test'));
 
 exit();
 
