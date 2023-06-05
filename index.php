@@ -78,7 +78,7 @@ if ( !isset($_FILES['image']) || !is_array($_FILES['image']) ) {
 	exit();
 }
 
-if ( !isset($_FILES['image']["name"]['cm']) || mb_strlen($_FILES['image']["tmp_name"]['cm'])==0 || $_FILES['image']["size"]['cm']==0 || $_FILES['image']["error"]['cm']!=0 ) {
+if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])==0 || $_FILES['image']["size"]==0 || $_FILES['image']["error"]!=UPLOAD_ERR_OK ) {
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
 	$exitStatus->setVal('text', 'Bad Request.'.__LINE__);
