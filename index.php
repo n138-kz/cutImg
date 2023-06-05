@@ -61,7 +61,8 @@ if( mb_strtolower($_SERVER['REQUEST_METHOD']) != 'post' ){
 	error_log(json_encode($exitStatus->getExitStatus()));
 	exit();
 }
-exit();
+
+if ( !isset($_FILES['image']) || !is_array($_FILES['image']) ) {
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
 	$exitStatus->setVal('text', 'Bad Request.');
