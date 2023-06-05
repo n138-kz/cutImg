@@ -112,6 +112,9 @@
                 return val;
             }
             function setPreset(preset) {
+                /*
+                * validity check
+                */
                 size_width = getNotNaN(parseInt(document.querySelector('input[name="position_1x"]').max, 10));
                 size_height = getNotNaN(parseInt(document.querySelector('input[name="position_1y"]').max, 10));
 
