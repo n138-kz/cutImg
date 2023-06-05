@@ -123,42 +123,6 @@ var_dump($image);exit();
 
 
 
-foreach ($item as $key => $val) {
-    if ($files_before_1["error"][$val]!=0 || !isset($files_before_1["error"][$val])) {
-        unset($files_before_1['error'][$val]);
-        unset($files_before_1['name'][$val]);
-        unset($files_before_1['tmp_name'][$val]);
-        unset($files_before_1['full_path'][$val]);
-        unset($files_before_1['type'][$val]);
-        unset($files_before_1['size'][$val]);
-    } else {
-        $files_before_1valid[$val]['error']     = $files_before_1['error'][$val];
-        $files_before_1valid[$val]['name']      = $files_before_1['name'][$val];
-        $files_before_1valid[$val]['tmp_name']  = $files_before_1['tmp_name'][$val];
-        $files_before_1valid[$val]['full_path'] = $files_before_1['full_path'][$val];
-        $files_before_1valid[$val]['type']      = $files_before_1['type'][$val];
-        $files_before_1valid[$val]['size']      = $files_before_1['size'][$val];
-
-        $files_before_1valid[$val]['raw_data']  = NULL;
-        $files_before_1valid[$val]['size_wh']   = getimagesize($files_before_1['tmp_name'][$val]);
-        switch ($files_before_1valid[$val]['size_wh'][2]) {
-            case IMAGETYPE_JPEG:
-                $files_before_1valid[$val]['raw_data'] = imagecreatefromjpeg($files_before_1valid[$val]['tmp_name']);
-                $files_before_1valid[$val]['mime'] = 'JPEG';
-                break;
-            case IMAGETYPE_PNG:
-                $files_before_1valid[$val]['raw_data'] = imagecreatefrompng($files_before_1valid[$val]['tmp_name']);
-                $files_before_1valid[$val]['mime'] = 'PNG';
-                break;
-            case IMAGETYPE_GIF:
-                $files_before_1valid[$val]['raw_data'] = imagecreatefromgif($files_before_1valid[$val]['tmp_name']);
-                $files_before_1valid[$val]['mime'] = 'GIF';
-                break;
-            default:
-                break;
-        }
-    }
-}
 
 $files_canvas_size=[ 0, 0 ];
 if (FALSE) {
