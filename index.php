@@ -152,16 +152,18 @@ try {
     );
 
     if (RETURN_IMAGE) {
-        $image['export_name'] = time().'.png';
+        $image['export']['name'] = time().'.png';
         header('Content-Type: image/png');
-        header('Content-Disposition: attachment; filename="'.$image['export_name'].'"');
-        imagepng( $image['canvas'], 'php://memory/'.$image['export_name'] );
-        $size = filesize('php://memory/'.$image['export_name']);
-        header('Content-Length: '.filesize('php://memory/'.$image['export_name']));
-        #echo file_get_contents('php://memory/'.$image['export_name']);
+        header('Content-Disposition: attachment; filename="'.$image['export']['name'].'"');
+        imagepng( $image['canvas'], 'php://memory/'.$image['export']['name'] );
+
+        $image['export']['size'] = filesize('php://memory/'.$image['export']['name']);
+        header('Content-Length: '.filesize('php://memory/'.$image['export']['name']));
+        #echo file_get_contents('php://memory/'.$image['export']['name']);
+    } else {
+        header('Content-Type: image/png');
+        imagepng( $image['canvas'], NULL );
     }
-    header('Content-Type: image/png');
-    imagepng( $image['canvas'], NULL );
     
 } catch (\Throwable $th) {
     error_log($th->getMessage());
