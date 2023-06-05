@@ -162,6 +162,7 @@ try {
     $discord->setValue('content', json_encode([
         $image['position'],
         $image['canvassize'],
+        $image['imagesize'],
     ]));$discord->exec_curl();
 
     if (RETURN_IMAGE) {
