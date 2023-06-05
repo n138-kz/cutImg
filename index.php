@@ -99,15 +99,15 @@ try {
     $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
     switch ($image['imagesize'][2]) {
         case IMAGETYPE_JPEG:
-            $image['raw_data'] = imagecreatefromjpeg($image['tmp_name']);
+            $image['raw_data'] = imagecreatefromjpeg($_FILES['image']['tmp_name']);
             $image['imagetype'] = 'JPEG';
             break;
         case IMAGETYPE_PNG:
-            $image['raw_data'] = imagecreatefrompng($image['tmp_name']);
+            $image['raw_data'] = imagecreatefrompng($_FILES['image']['tmp_name']);
             $image['imagetype'] = 'PNG';
             break;
         case IMAGETYPE_GIF:
-            $image['raw_data'] = imagecreatefromgif($image['tmp_name']);
+            $image['raw_data'] = imagecreatefromgif($_FILES['image']['tmp_name']);
             $image['imagetype'] = 'GIF';
             break;
         default:
