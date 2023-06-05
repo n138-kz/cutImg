@@ -135,6 +135,11 @@
                     console.error('preset error.');
                     return false;
                 }
+                if ( !(size_width >= position_1x) || !(size_height >= position_1y) ) {
+                    /* NG */
+                    console.error('value error.');
+                    return false;
+                }
                 console.log([preset, {width: size_width, height:size_height}]);
             }
         </script>
