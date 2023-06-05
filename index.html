@@ -41,6 +41,13 @@
             border: none;
             border-bottom: 1px solid #000;
         }
+        div#exec_output {
+            background-color: pink;
+        }
+        div#exec_output p {
+            margin: none;
+            padding: none;
+        }
     </style>
 </head>
 <body>
@@ -136,12 +143,20 @@
                 }
                 if ( !(0 <= position_0x) || !(0 <= position_0y) ) {
                     /* NG */
-                    console.error('preset error.');
+                    dom_p = document.createElement('p');
+                    dom_p.innerText = 'preset error.';
+                    document.getElementById('exec_output').append(dom_p);
+
+                    console.error(dom_p.innerText);
                     return false;
                 }
                 if ( !(size_width >= position_1x) || !(size_height >= position_1y) ) {
                     /* NG */
-                    console.error('value error.');
+                    dom_p = document.createElement('p');
+                    dom_p.innerText = 'value error.';
+                    document.getElementById('exec_output').append(dom_p);
+
+                    console.error(dom_p.innerText);
                     return false;
                 }
                 document.querySelector('input[name="position_0x"]').value=position_0x;
@@ -151,6 +166,7 @@
                 console.log([preset, {width: size_width, height:size_height}]);
             }
         </script>
+        <div id="exec_output"></div>
         <ul>
             <li><a href="javascript:setPreset([0,292,1170,2282]);">iPhone13pro - Safari - 01</a></li>
         </ul>
