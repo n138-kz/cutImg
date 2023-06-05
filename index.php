@@ -141,8 +141,8 @@ try {
     }
 
     $image['canvassize'] = [
-        max($image['imagesize'][0], $image['position'][2]),
-        max($image['imagesize'][1], $image['position'][3]),
+        min($image['imagesize'][0], $image['position'][2]),
+        min($image['imagesize'][1], $image['position'][3]),
     ];
 
     $image['canvas'] = imagecreatetruecolor($image['canvassize'][0], $image['canvassize'][1]);
