@@ -94,6 +94,7 @@ if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])
 	error_log(json_encode($exitStatus->getExitStatus()));
 	exit();
 }
+header('Content-Type: text/plain');
 
 try {
     $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
@@ -131,7 +132,6 @@ try {
 } catch (\Throwable $th) {
     imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
 }
-header('Content-Type: text/plain');
 #var_dump();
 imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', base64_encode('test'));
 
