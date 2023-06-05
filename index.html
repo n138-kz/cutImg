@@ -111,11 +111,11 @@
                 }
                 return val;
             }
-            function setPreset() {
+            function setPreset(preset) {
                 size_width = getNotNaN(parseInt(document.querySelector('input[name="position_1x"]').max, 10));
                 size_height = getNotNaN(parseInt(document.querySelector('input[name="position_1y"]').max, 10));
 
-                console.log({width: size_width, height:size_height});
+                console.log([preset, {width: size_width, height:size_height}]);
             }
         </script>
         <a href="javascript:setPreset();">setPreset</a>
