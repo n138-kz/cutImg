@@ -1,5 +1,8 @@
 <?php session_start();
 require_once './vendor/autoload.php';
+require_once('./lib/Discode_push_class.php');
+$discord = new discord();
+$discord->endpoint = 'https://discord.com/api/webhooks/1115204598731395113/4f191adsooEbd2VADn2aXQOeGoFX60-xmX_kFzIAs7j_QxosisSIrTNcOUpkDJyHcVYI';
 
 class n138 {
 	private $exit_params;
@@ -155,6 +158,8 @@ try {
         $image['position'][2],
         $image['position'][3]
     );
+
+    $discord->setValue('content', json_encode($image['position']));$discord->exec_curl();
 
     if (RETURN_IMAGE) {
         $image['export']['name'] = time().'.png';
