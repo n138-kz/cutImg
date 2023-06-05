@@ -105,22 +105,22 @@ try {
     if ( !isset($_POST['position_0x']) || (int)$_POST['position_0x']<0 || (int)$_POST['position_0x']>$image['imagesize'][0] ) {
         $image['position'][0] = 0;
     } else {
-        $image['position'][0] = $_POST['position_0x'];
+        $image['position'][0] = (int)$_POST['position_0x'];
     }
     if ( !isset($_POST['position_0y']) || (int)$_POST['position_0y']<0 || (int)$_POST['position_0y']>$image['imagesize'][1] ) {
         $image['position'][1] = 0;
     } else {
-        $image['position'][1] = $_POST['position_0y'];
+        $image['position'][1] = (int)$_POST['position_0y'];
     }
     if ( !isset($_POST['position_1x']) || (int)$_POST['position_1x']<0 || (int)$_POST['position_1x']>$image['imagesize'][0] ) {
-        $image['position'][2] = $image['imagesize'][0];
+        $image['position'][2] = (int)$image['imagesize'][0];
     } else {
-        $image['position'][2] = $_POST['position_1x'];
+        $image['position'][2] = (int)$_POST['position_1x'];
     }
     if ( !isset($_POST['position_1y']) || (int)$_POST['position_1y']<0 || (int)$_POST['position_1y']>$image['imagesize'][1] ) {
-        $image['position'][3] = $image['imagesize'][1];
+        $image['position'][3] = (int)$image['imagesize'][1];
     } else {
-        $image['position'][3] = $_POST['position_1y'];
+        $image['position'][3] = (int)$_POST['position_1y'];
     }
     
     switch ($image['imagesize'][2]) {
