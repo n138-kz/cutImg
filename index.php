@@ -133,7 +133,8 @@ try {
     imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'SomeFont', $th->getMessage());
 }
 #var_dump();
-imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Arial', base64_encode('test'));
+putenv('GDFONTPATH=' . realpath('.'));
+imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Arial.ttf', base64_encode('test'));
 
 exit();
 
