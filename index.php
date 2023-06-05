@@ -114,6 +114,9 @@ try {
             break;
     }
 
+    $image['canvas'] = imagecreatetruecolor($image['imagesize'][0], $image['imagesize'][1]);
+    imagefill($image['canvas'], 0, 0, imagecolorallocate($image['canvas'], 255, 255, 255));
+
 } catch (\Throwable $th) {
 }
 header('Content-Type: text/plain');
