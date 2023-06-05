@@ -25,6 +25,9 @@ class n138 {
 		$this->exit_params[$key] = $val;
 	}
 }
+function sum($param1, $param2) {
+    return $param1+$param2;
+}
 ini_set('upload_max_filesize', '25M');
 ini_set('post_max_size', '100M');
 header('Content-Type: Application/json');
