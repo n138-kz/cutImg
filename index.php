@@ -78,7 +78,6 @@ if ( !isset($_FILES['image']) || !is_array($_FILES['image']) ) {
 	exit();
 }
 
-exit();
 if ( !isset($_FILES['image']["name"]['cm']) || mb_strlen($_FILES['image']["tmp_name"]['cm'])==0 || $_FILES['image']["size"]['cm']==0 || $_FILES['image']["error"]['cm']!=0 ) {
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
