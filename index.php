@@ -79,6 +79,7 @@ if ( !isset($_FILES['image']) || !is_array($_FILES['image']) ) {
 }
 
 if ( !isset($_FILES['image']) ) {
+exit();
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
 	$exitStatus->setVal('text', 'Bad Request.');
