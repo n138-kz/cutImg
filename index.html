@@ -4,63 +4,156 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>resizeImg</title>
+    <title>cutImg</title>
     <script src="https://www.google.com/recaptcha/api.js?render=6LfCHdcUAAAAAOwkHsW_7W7MfoOrvoIw9CXdLRBA"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="./lib/grecaptcha.js" id="grecaptchajs"></script>
     <script src="./lib/toDateTimeString.js"></script>
     <script src="./lib/isset.js"></script>
     <style>
-        td {
-            padding: 0 5px;
+        td:not(#cutImg td) {
+            text-align: center;
         }
         code {
             background-color: #e0e0e0;
             padding: 0 10px;
         }
+        @media screen and (orientation: portrait) {
+            .display_landscape {
+                display: none;
+            }
+        }
+        @media screen and (orientation: landscape) {
+            .display_portrait {
+                display: none;
+            }
+        }
+        input:not(input[type="submit"]) {
+            width: 200px;
+            margin: 0 5px;
+            padding: 0 5px;
+        }
+        input.kbd_numeric {
+            border: none;
+            border-bottom: 1px solid #000;
+        }
     </style>
 </head>
 <body>
     <form action="./" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <input type="submit">
+        <table border="1" id="cutImg">
+            <tr>
+                <th>画像</th>
+                <td>
+                    <input type="file" id="image" accept="image/*" name="image" required onchange="getImageSize(this)">
+                </td>
+                <script>
+                    /*
+                    * ブラウザ上でtype=fileのinputでアップされた画像の縦横サイズを取得する
+                    * https://qiita.com/zenpou/items/4b1a0946b120fecd4494
+                    */th
+                    function getImageSize(file) {
+                        if ( ! file.files[0] ){
+                            return;
+                        }
+                        image = new Image();
+                        image.onload = function() {
+                            result = {width: image.naturalWidth, height: image.naturalHeight};
+                            console.log(result);
+
+                            document.querySelector('input[name="position_1x"]').value=result.width;
+                            document.querySelector('input[name="position_1y"]').value=result.height;
+
+                            document.querySelector('input[name="position_0x"]').max=result.width;
+                            document.querySelector('input[name="position_0y"]').max=result.height;
+
+                            document.querySelector('input[name="position_1x"]').max=result.width;
+                            document.querySelector('input[name="position_1y"]').max=result.height;
+                        }
+                        image.src = URL.createObjectURL(file.files[0]);
+                    }
+                  </script>
+            </tr>
+            <tr>
+                <th>始点(x)</th>
+                <td>
+                    <input type="number" class="kbd_numeric" name="position_0x" min="0" required value="0">
+                </td>
+            </tr>
+            <tr>
+                <th>始点(y)</th>
+                <td>
+                    <input type="number" class="kbd_numeric" name="position_0y" min="0" required value="0">
+                </td>
+            </tr>
+            <tr>
+                <th>終点(x)</th>
+                <td>
+                    <input type="number" class="kbd_numeric" name="position_1x" min="0" required>
+                </td>
+            </tr>
+            <tr>
+                <th>終点(y)</th>
+                <td>
+                    <input type="number" class="kbd_numeric" name="position_1y" min="0" required>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="submit">
+                </th>
+            </tr>
+        </table>
     </form>
     <div>
-        <a href="https://github.com/n138-kz/resizeImg">
-            <img src="lib/howto_iphone_shortcut_01.png" style="width: 75%; max-width: 300px;" alt="">
-        </a>
-        <a href="https://github.com/n138-kz/resizeImg">
-            <img src="lib/howto_iphone_shortcut_02.png" style="width: 75%; max-width: 300px;" alt="">
-        </a>
-        <a href="https://github.com/n138-kz/resizeImg">https://github.com/n138-kz/resizeImg</a>
+        <p>
+            <a href="https://github.com/n138-kz/joinImg">https://github.com/n138-kz/joinImg</a>
+        </p>
         <table border="1">
             <tr>
-                <th colspan="2">METHOD</th>
-            </tr>
-            <tr>
+                <th rowspan="1">METHOD</th>
                 <td>METHOD</td>
                 <td><code>POST</code></td>
+                <td></td>
             </tr>
             <tr>
-                <th colspan="2">HEADER</th>
-            </tr>
-            <tr>
+                <th rowspan="2">HEADER</th>
                 <td><code>X-SCRIPT-DEBUG</code></td>
                 <td><code>0</code></td>
+                <td>DEBUGフラグ</td>
             </tr>
             <tr>
                 <td><code>X-USERID</code></td>
                 <td><code>0</code></td>
+                <td>OAuth2 Token</td>
             </tr>
             <tr>
-                <th colspan="2">CONTENT</th>
-            </tr>
-            <tr>
+                <th rowspan="5">CONTENT</th>
                 <td><code>image</code></td>
-                <td>画像ファイル（バイナリ）</td>
+                <td>画像ファイル</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><code>position_0x</code></td>
+                <td><code>0</code></td>
+                <td>始点(x軸方向)</td>
+            </tr>
+            <tr>
+                <td><code>position_0y</code></td>
+                <td><code>0</code></td>
+                <td>始点(y軸方向)</td>
+            </tr>
+            <tr>
+                <td><code>position_1x</code></td>
+                <td><code>0</code></td>
+                <td>終点(x軸方向)</td>
+            </tr>
+            <tr>
+                <td><code>position_1y</code></td>
+                <td><code>0</code></td>
+                <td>終点(y軸方向)</td>
             </tr>
         </table>
-        
     </div>
 </body>
 </html>
