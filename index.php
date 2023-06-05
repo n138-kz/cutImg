@@ -159,7 +159,10 @@ try {
         $image['position'][3]
     );
 
-    $discord->setValue('content', json_encode($image['position']));$discord->exec_curl();
+    $discord->setValue('content', json_encode([
+        $image['position'],
+        $image['canvassize'],
+    ]));$discord->exec_curl();
 
     if (RETURN_IMAGE) {
         $image['export']['name'] = time().'.png';
