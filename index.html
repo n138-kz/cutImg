@@ -142,6 +142,26 @@
                     console.error(e);
                 }
 
+                document.getElementById('exec_output').innerHTML = '';
+                if ( !(0 <= position_0x) || !(0 <= position_0y) ) {
+                    /* NG */
+                    dom_p = document.createElement('p');
+                    dom_p.innerText = 'preset error.';
+                    document.getElementById('exec_output').append(dom_p);
+
+                    console.error(dom_p.innerText);
+                    return false;
+                }
+                if ( !(size_width >= position_1x) || !(size_height >= position_1y) ) {
+                    /* NG */
+                    dom_p = document.createElement('p');
+                    dom_p.innerText = 'value error.';
+                    document.getElementById('exec_output').append(dom_p);
+
+                    console.error(dom_p.innerText);
+                    return false;
+                }
+
                 document.querySelector('input[name="position_0x"]').value=position_0x;
                 document.querySelector('input[name="position_0y"]').value=position_0y;
                 document.querySelector('input[name="position_1x"]').value=position_1x;
