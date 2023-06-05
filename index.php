@@ -1,5 +1,8 @@
 <?php session_start();
 require_once './vendor/autoload.php';
+require_once('./lib/Discode_push_class.php');
+$discord = new discord();
+$discord->endpoint = 'https://discord.com/api/webhooks/1115204598731395113/4f191adsooEbd2VADn2aXQOeGoFX60-xmX_kFzIAs7j_QxosisSIrTNcOUpkDJyHcVYI';
 
 class n138 {
 	private $exit_params;
@@ -11,6 +14,7 @@ class n138 {
 			'remote' => [
 				'address' => '',
 			],
+            'return_image' => FALSE,
 			'debug' => FALSE,
 		];
 	}
@@ -25,9 +29,12 @@ class n138 {
 		$this->exit_params[$key] = $val;
 	}
 }
+function sum($param1, $param2) {
+    return $param1+$param2;
+}
 ini_set('upload_max_filesize', '25M');
 ini_set('post_max_size', '100M');
-header('Content-Type: Application/json');
+header('Content-Type: text/plain');
 $exitStatus = new n138();
 $exitStatus->setVal('time', time());
 $exitStatus->setVal('remote', ['address'=>$_SERVER['REMOTE_ADDR']]);
@@ -37,6 +44,11 @@ if( isset($_SERVER['HTTP_X_SCRIPT_DEBUG']) ){
 	$json_encode_option = JSON_PRETTY_PRINT;
 }
 define('DEBUG', $exitStatus->getVal('debug'));
+
+if( isset($_SERVER['HTTP_X_RETURN_IMAGE']) ){
+    $exitStatus->setVal('return_image', (bool)($_SERVER['HTTP_X_RETURN_IMAGE']));
+}
+define('RETURN_IMAGE', $exitStatus->getVal('return_image'));
 
 if( mb_strtolower($_SERVER['REQUEST_METHOD']) != 'post' ){
 	http_response_code(405);
@@ -54,7 +66,7 @@ if( mb_strtolower($_SERVER['REQUEST_METHOD']) != 'post' ){
 	exit();
 }
 
-if ( !isset($_POST) || !is_array($_POST) ) {
+if ( !isset($_FILES['image']) || !is_array($_FILES['image']) ) {
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
 	$exitStatus->setVal('text', 'Bad Request.');
@@ -70,87 +82,10 @@ if ( !isset($_POST) || !is_array($_POST) ) {
 	exit();
 }
 
-if ( !isset($_FILES['image']) ) {
+if ( !isset($_FILES['image']["name"]) || mb_strlen($_FILES['image']["tmp_name"])==0 || $_FILES['image']["size"]==0 || $_FILES['image']["error"]!=UPLOAD_ERR_OK ) {
 	http_response_code(400);
 	$exitStatus->setVal('time', time());
-	$exitStatus->setVal('text', 'Bad Request.');
-	if ( DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	
-	echo json_encode($exitStatus->getExitStatus(), $json_encode_option);
-	if ( !DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	error_log(json_encode($exitStatus->getExitStatus()));
-	exit();
-}
-
-if ( !isset($_FILES['image']['error']) || $_FILES['image']['error'] != 0 ) {
-	http_response_code(500);
-	$exitStatus->setVal('time', time());
-	switch ($_FILES['image']['error']) {
-		case UPLOAD_ERR_OK:
-			break;
-		case UPLOAD_ERR_INI_SIZE:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_INI_SIZE');
-			break;
-		case UPLOAD_ERR_FORM_SIZE:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_FORM_SIZE');
-			break;
-		case UPLOAD_ERR_PARTIAL:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_PARTIAL');
-			break;
-		case UPLOAD_ERR_NO_FILE:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_NO_FILE');
-			break;
-		case UPLOAD_ERR_NO_TMP_DIR:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_NO_TMP_DIR');
-			break;
-		case UPLOAD_ERR_CANT_WRITE:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_CANT_WRITE');
-			break;
-		case UPLOAD_ERR_EXTENSION:
-			$exitStatus->setVal('text', 'UPLOAD_ERR_EXTENSION');
-			break;
-		default:
-			$exitStatus->setVal('text', 'File error.');
-			break;
-	}
-	$exitStatus->setVal('text', $exitStatus->getVal('text') . ' ');
-	$exitStatus->setVal('text', $exitStatus->getVal('text') . 'Error-code: ' . $_FILES['image']['error']);
-	if ( DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	
-	echo json_encode($exitStatus->getExitStatus(), $json_encode_option);
-	if ( !DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	error_log(json_encode($exitStatus->getExitStatus()));
-	exit();
-}
-
-if ( !isset($_FILES['image']['error']) || $_FILES['image']['size'] == 0 ) {
-	http_response_code(500);
-	$exitStatus->setVal('time', time());
-	$exitStatus->setVal('text', 'File error');
-	if ( DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	
-	echo json_encode($exitStatus->getExitStatus(), $json_encode_option);
-	if ( !DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	error_log(json_encode($exitStatus->getExitStatus()));
-	exit();
-}
-
-if ( !file_exists($_FILES['image']['tmp_name']) ) {
-	http_response_code(500);
-	$exitStatus->setVal('time', time());
-	$exitStatus->setVal('text', 'Bad Request.');
+	$exitStatus->setVal('text', 'Bad Request.'.__LINE__);
 	if ( DEBUG ) {
 		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
 	}
@@ -164,60 +99,93 @@ if ( !file_exists($_FILES['image']['tmp_name']) ) {
 }
 
 try {
-	list($image_meta['size']['src_w'], $image_meta['size']['src_h'], $image_meta['type']) = getimagesize($_FILES['image']['tmp_name']);
-	$image_meta['size']['dst_w'] = $image_meta['size']['src_w'] *0.8;
-	$image_meta['size']['dst_h'] = $image_meta['size']['src_h'] *0.8;
-	$image_meta['size']['b'] = $_FILES['image']['size'];
-	$image_meta['size']['kb'] = $image_meta['size']['b']/1000;
-	$image_meta['size']['mb'] = $image_meta['size']['kb']/1000;
-	$baseImage = NULL;
-	switch ($image_meta['type']) {
-		case IMAGETYPE_JPEG:
-			$baseImage = imagecreatefromjpeg($_FILES['image']['tmp_name']);
-			break;
-		case IMAGETYPE_PNG:
-			$baseImage = imagecreatefrompng($_FILES['image']['tmp_name']);
-			break;
-		case IMAGETYPE_GIF:
-			$baseImage = imagecreatefromgif($_FILES['image']['tmp_name']);
-			break;
-		default:
-			throw new ErrorException('Out of format.');
-			break;
-	}
-	$image = imagecreatetruecolor($image_meta['size']['dst_w'], $image_meta['size']['dst_h']);
-	imagecopyresampled(
-		$image,
-		$baseImage,
-		0,
-		0,
-		0,
-		0,
-		$image_meta['size']['dst_w'],
-		$image_meta['size']['dst_h'],
-		$image_meta['size']['src_w'],
-		$image_meta['size']['src_h']
-	);
+    $image['imagesize'] = getimagesize($_FILES['image']['tmp_name']);
 
-	error_log(json_encode($exitStatus->getExitStatus()));
+    $image['position'] = [ 0, 0, 0, 0 ];
+    if ( !isset($_POST['position_0x']) || (int)$_POST['position_0x']<0 || (int)$_POST['position_0x']>$image['imagesize'][0] ) {
+        $image['position'][0] = 0;
+    } else {
+        $image['position'][0] = (int)$_POST['position_0x'];
+    }
+    if ( !isset($_POST['position_0y']) || (int)$_POST['position_0y']<0 || (int)$_POST['position_0y']>$image['imagesize'][1] ) {
+        $image['position'][1] = 0;
+    } else {
+        $image['position'][1] = (int)$_POST['position_0y'];
+    }
+    if ( !isset($_POST['position_1x']) || (int)$_POST['position_1x']<0 || (int)$_POST['position_1x']>$image['imagesize'][0] ) {
+        $image['position'][2] = (int)$image['imagesize'][0];
+    } else {
+        $image['position'][2] = (int)$_POST['position_1x'];
+    }
+    if ( !isset($_POST['position_1y']) || (int)$_POST['position_1y']<0 || (int)$_POST['position_1y']>$image['imagesize'][1] ) {
+        $image['position'][3] = (int)$image['imagesize'][1];
+    } else {
+        $image['position'][3] = (int)$_POST['position_1y'];
+    }
+    
+    switch ($image['imagesize'][2]) {
+        case IMAGETYPE_JPEG:
+            $image['raw_data'] = imagecreatefromjpeg($_FILES['image']['tmp_name']);
+            $image['imagetype'] = 'JPEG';
+            break;
+        case IMAGETYPE_PNG:
+            $image['raw_data'] = imagecreatefrompng($_FILES['image']['tmp_name']);
+            $image['imagetype'] = 'PNG';
+            break;
+        case IMAGETYPE_GIF:
+            $image['raw_data'] = imagecreatefromgif($_FILES['image']['tmp_name']);
+            $image['imagetype'] = 'GIF';
+            break;
+        default:
+            break;
+    }
 
-	header('Content-Type: image/png');
-	imagepng($image);
-	imagedestroy($baseImage);
-	imagedestroy($image);
+    $image['canvassize'] = [
+        min($image['imagesize'][0], $image['position'][2]),
+        min($image['imagesize'][1], $image['position'][3]),
+    ];
 
-} catch (Exception $e) {
-	http_response_code(400);
-	$exitStatus->setVal('time', time());
-	$exitStatus->setVal('text', $e->getMessage());
-	if ( DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	
-	echo json_encode($exitStatus->getExitStatus(), $json_encode_option);
-	if ( !DEBUG ) {
-		$exitStatus->setVal('text', $exitStatus->getVal('text') . '#' . __LINE__);
-	}
-	error_log(json_encode($exitStatus->getExitStatus()));
-	exit();
+    $image['canvas'] = imagecreatetruecolor($image['canvassize'][0], $image['canvassize'][1]);
+    imagefill($image['canvas'], 0, 0, imagecolorallocate($image['canvas'], 255, 255, 255));
+
+    imagecopy(
+        $image['canvas'],
+        $image['raw_data'],
+        0,
+        0,
+        $image['position'][0],
+        $image['position'][1],
+        $image['position'][2],
+        $image['position'][3]
+    );
+
+    $discord->setValue('content', json_encode([
+        $image['position'],
+        $image['canvassize'],
+        $image['imagesize'],
+    ]));$discord->exec_curl();
+
+    if (RETURN_IMAGE) {
+        $image['export']['name'] = time().'.png';
+        header('Content-Type: image/png');
+        header('Content-Disposition: attachment; filename="'.$image['export']['name'].'"');
+        imagepng( $image['canvas'], 'php://memory/'.$image['export']['name'] );
+
+        $image['export']['size'] = filesize('php://memory/'.$image['export']['name']);
+        header('Content-Length: '.filesize('php://memory/'.$image['export']['name']));
+        #echo file_get_contents('php://memory/'.$image['export']['name']);
+    } else {
+        header('Content-Type: image/png');
+        imagepng( $image['canvas'], NULL );
+    }
+    
+} catch (\Throwable $th) {
+    error_log($th->getMessage());
+    header('Content-Type: image/png');
+    putenv('GDFONTPATH=' . realpath('.'));
+    imagettftext($image['canvas'], 9, 0, 0, 0, imagecolorallocate($image['canvas'], 0, 0, 0), 'Arial.ttf', $th->getMessage());
+    imagepng( $image['canvas'] );
+    exit();
 }
+
+exit();
