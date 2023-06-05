@@ -103,11 +103,11 @@ try {
             $image['imagetype'] = 'JPEG';
             break;
         case IMAGETYPE_PNG:
-            $image['raw_data'] = imagecreatefrompng($files_before_1valid[$val]['tmp_name']);
+            $image['raw_data'] = imagecreatefrompng($image['tmp_name']);
             $image['imagetype'] = 'PNG';
             break;
         case IMAGETYPE_GIF:
-            $image['raw_data'] = imagecreatefromgif($files_before_1valid[$val]['tmp_name']);
+            $image['raw_data'] = imagecreatefromgif($image['tmp_name']);
             $image['imagetype'] = 'GIF';
             break;
         default:
