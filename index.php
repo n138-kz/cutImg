@@ -117,6 +117,17 @@ try {
     $image['canvas'] = imagecreatetruecolor($image['imagesize'][0], $image['imagesize'][1]);
     imagefill($image['canvas'], 0, 0, imagecolorallocate($image['canvas'], 255, 255, 255));
 
+    if (RETURN_IMAGE) {
+        $image['export_name'] = time().'.png';
+        header('Content-Type: image/png');
+        header('Content-Disposition: attachment; filename="'.$image['export_name'].'"');
+        imagepng( $image['canvas'], 'php://memory/'.$image['export_name'] );
+        $size = filesize('php://memory/'.$image['export_name']);
+        header('Content-Length: '.filesize('php://memory/'.$image['export_name']));
+        #echo file_get_contents('php://memory/'.$image['export_name']);
+    }
+    imagepng( $image['canvas'], NULL );
+    
 } catch (\Throwable $th) {
 }
 header('Content-Type: text/plain');
