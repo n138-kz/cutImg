@@ -82,6 +82,11 @@
                             document.querySelector('input[name="position_1y"]').max=result.height;
                         }
                         image.src = URL.createObjectURL(file.files[0]);
+
+                        setRecentlyConfig(
+                            result.width + 'x' + result.height,
+                            0, 0, result.width, result.height
+                        );
                     }
                   </script>
             </tr>
@@ -168,11 +173,78 @@
                 document.querySelector('input[name="position_1y"]').value=position_1y;
                 console.log([preset, {width: size_width, height:size_height}]);
             }
+            function isset(params) {
+                return !( typeof params === 'undefined' || params === null );            
+            }
+            function getRecentlyConfig() {
+                let RecentlyConfig = '';
+                RecentlyConfig = sessionStorage.getItem( (btoa(location.href)).slice(0, 16) + '.recentlyConfig' );
+                if ( RecentlyConfig == null ) { return false; }
+
+                RecentlyConfig = JSON.parse(RecentlyConfig);
+                return RecentlyConfig;
+            }
+            function setRecentlyConfig(name,wstart,hstart,xend,hend) {
+                /*
+                 * 
+                 * @args
+                 * name   : [str] 
+                 * wstart : [int] 
+                 * hstart : [int] 
+                 * xend   : [int] 
+                 * hend   : [int] 
+                 * 
+                */
+
+                /* 保存されてない場合は初期化 */
+                let RecentlyConfig = getRecentlyConfig();
+                if (RecentlyConfig==false) { RecentlyConfig = []; }
+
+                /* 値渡されてないときは止める */
+                if (!isset(name) && name.length==0) {
+                    console.error('name is undefined.');
+                    return false;
+                }
+                if (!isset(wstart) && parseInt(wstart,10)<0) {
+                    console.error('wstart is undefined.');
+                    return false;
+                }
+                if (!isset(hstart) && parseInt(hstart,10)<0) {
+                    console.error('hstart is undefined.');
+                    return false;
+                }
+                if (!isset(xend) && parseInt(xend,10)<0) {
+                    console.error('xend is undefined.');
+                    return false;
+                }
+                if (!isset(hend) && parseInt(hend,10)<0) {
+                    console.error('hend is undefined.');
+                    return false;
+                }
+
+                /* 整形 */
+                RecentlyConfig_neo = [
+                    name, [
+                        parseInt(wstart, 10),
+                        parseInt(hstart, 10),
+                        parseInt(xend, 10),
+                        parseInt(hend, 10)
+                    ]
+                ];
+                console.log(RecentlyConfig_neo);
+
+                RecentlyConfig.push(RecentlyConfig_neo);
+                console.log(RecentlyConfig);
+
+                sessionStorage.setItem( (btoa(location.href)).slice(0, 16) + '.recentlyConfig', RecentlyConfig );
+
+            }
         </script>
         <div id="exec_output"></div>
         <ul>
             <li><a href="javascript:setPreset([0,292,1170,1990]);">iPhone13pro - Safari - 01</a></li>
             <li><a href="javascript:setPreset([0,0,1459,994]);">1459x1014-&gt;1459x994</a></li>
+            <li><a href="javascript:setPreset([0,0,1602,900]);">1602x932-&gt;1602x900</a></li>
         </ul>
     </form>
     <div>
