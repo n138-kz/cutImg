@@ -168,6 +168,9 @@
                 document.querySelector('input[name="position_1y"]').value=position_1y;
                 console.log([preset, {width: size_width, height:size_height}]);
             }
+            function isset(params) {
+                return !( typeof params === 'undefined' || params === null );            
+            }
         </script>
         <div id="exec_output"></div>
         <ul>
