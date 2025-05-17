@@ -1,8 +1,11 @@
 <?php session_start();
 require_once './vendor/autoload.php';
 require_once('./lib/Discode_push_class.php');
+
+$config=json_decode(file_get_contents(__DIR__.'/.secret/config.json'), TRUE);
+
 $discord = new discord();
-$discord->endpoint = 'https://discord.com/api/webhooks/1115204598731395113/4f191adsooEbd2VADn2aXQOeGoFX60-xmX_kFzIAs7j_QxosisSIrTNcOUpkDJyHcVYI';
+$discord->endpoint = $config['external']['discord']['endpoint']['url'];
 
 class n138 {
 	private $exit_params;
